@@ -19,6 +19,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle) {
 
 	input_ = Input::GetInstance();
 
+
 	
 }
 
