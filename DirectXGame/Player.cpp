@@ -68,8 +68,10 @@ void Player::Update() {
 }
 
 void Player::Draw(ViewProjection &viewProjection) {
-	viewProjection;
+	
+
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	
 
 }
 
