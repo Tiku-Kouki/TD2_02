@@ -15,7 +15,20 @@ void RailCamera::Initalize() {
 
 void RailCamera::Update() {
 
-	
+	   if (target_) {
+
+		Vector3 offset = {0.0f, 8.0f, -20.0f};
+
+		Matrix4x4 rotateXMatrix = MakeRotateXMatrix(viewProjection_.rotation_.x);
+		Matrix4x4 rotateYMatrix = MakeRotateYMatrix(viewProjection_.rotation_.y);
+		Matrix4x4 rotateZMatrix = MakeRotateZMatrix(viewProjection_.rotation_.z);
+
+		Matrix4x4 rotateXYZMatrix = Multiply(rotateXMatrix, Multiply(rotateYMatrix, rotateZMatrix));
+
+		offset = TransformNormal(offset, rotateXYZMatrix);
+
+		viewProjection_.translation_ = Add(target_->translation_, offset);
+	}
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);

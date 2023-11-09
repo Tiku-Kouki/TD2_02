@@ -292,3 +292,12 @@ Matrix4x4 Inverse(const Matrix4x4& m) {
 
 	return A;
 }
+Vector3 Add(const Vector3& v1, const Vector3& v2) {
+	Vector3 A = {};
+
+	A.x = v1.x + v2.x;
+	A.y = v1.y + v2.y;
+	A.z = v1.z + v2.z;
+
+	return A;
+}

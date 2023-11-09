@@ -15,6 +15,8 @@ class RailCamera {
 
 	const WorldTransform* target_ = nullptr;
 
+	
+
 public:
 	void Initalize();
 

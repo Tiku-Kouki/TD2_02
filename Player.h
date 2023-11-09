@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Model.h"
 #include "WorldTransform.h"
 #include "Input.h"
@@ -8,18 +8,12 @@
 
 #include <list>
 #include "Windows.h"
+ #include "ViewProjection.h"
 
 
 
 class Player {
 
-public:
-	void Initalize(Model* model, uint32_t textureHandle);
-	void Update();
-	void Draw(ViewProjection &viewProjection);
-	const WorldTransform& GetWorldTransform();
-
-	int x = 0;
 
 private:
 
@@ -31,6 +25,19 @@ private:
 
 	Input* input_ = nullptr;
 
-	int mon;
+	  // 　カメラのビュープロジェクション
+	const ViewProjection* viewProjection_ = nullptr;
+
+	public:
+	void Initalize(Model* model, uint32_t textureHandle);
+	void Update();
+	void Draw(ViewProjection& viewProjection);
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	 void SetViewProjection(const ViewProjection* viewProjection) {
+		viewProjection_ = viewProjection;
+	}
+
+
 
 };

@@ -26,11 +26,13 @@ void GameScene::Initialize() {
 	railCamera_->Initalize();
 
 	player_ = std::make_unique<Player>();
-
+	
 	player_->Initalize(model_.get(), textureHandle_);
 	
+	railCamera_->SetTarget(&player_->GetWorldTransform());
 	
-	
+	player_->SetViewProjection(&railCamera_->GetViewProjection());
+
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
