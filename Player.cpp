@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "cassert"
 #include"ImGuiManager.h"
 
@@ -9,7 +9,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle) {
 	model_ = model;
 	textureHandle_ = textureHandle;
 
-	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
+	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
 
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
@@ -74,6 +74,11 @@ void Player::Draw(ViewProjection &viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 	
 
+}
+
+const WorldTransform& Player::GetWorldTransform() {
+	// TODO: return ステートメントをここに挿入します
+	return worldTransform_;
 }
 
 

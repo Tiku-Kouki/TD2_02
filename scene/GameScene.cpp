@@ -28,9 +28,9 @@ void GameScene::Initialize() {
 	player_ = std::make_unique<Player>();
 
 	player_->Initalize(model_.get(), textureHandle_);
-
 	
-
+	
+	
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 

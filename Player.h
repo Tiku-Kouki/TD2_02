@@ -3,21 +3,23 @@
 #include "WorldTransform.h"
 #include "Input.h"
 #include "Affine.h"
+ #include"RailCamera.h"
+#include "Affine.h"
+
+#include <list>
+#include "Windows.h"
+
 
 
 class Player {
+
 public:
-
 	void Initalize(Model* model, uint32_t textureHandle);
-
-
 	void Update();
-
-
-
 	void Draw(ViewProjection &viewProjection);
+	const WorldTransform& GetWorldTransform();
 
-	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+	int x = 0;
 
 private:
 
@@ -29,4 +31,6 @@ private:
 
 	Input* input_ = nullptr;
 
-	};
+	int mon;
+
+};
