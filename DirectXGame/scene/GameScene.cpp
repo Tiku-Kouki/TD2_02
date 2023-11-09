@@ -10,6 +10,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete player_;
 	delete debugCamera_;
+	delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -32,7 +33,11 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
-
+	// Skydome
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	skydome_ = new Skydome();
+	skydome_->Initialize(modelSkydome_);
+	skydome_->Update();
 }
 
 void GameScene::Update() {
@@ -86,6 +91,8 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player_->Draw(viewProjection_);
+
+	skydome_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
