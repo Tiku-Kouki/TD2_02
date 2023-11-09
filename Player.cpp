@@ -9,7 +9,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle) {
 	model_ = model;
 	textureHandle_ = textureHandle;
 
-	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
@@ -43,13 +43,13 @@ void Player::Update() {
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
 
-	const float kMoveLimitX = 20;
-	const float kMoveLimitY = 18;
+	/*const float kMoveLimitX = 20;
+	const float kMoveLimitY = 18;*/
 
-	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
-	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
-	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
-	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
+	//worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
+	//worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
+	//worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
+	//worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
 
 

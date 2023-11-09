@@ -7,9 +7,8 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 
-	delete model_;
-	delete player_;
-	delete debugCamera_;
+	
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
@@ -19,15 +18,18 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
 
-	model_ = Model::Create();
+	model_ .reset(Model::Create());
 
 	viewProjection_.Initialize();
 
-	player_ = new Player();
+	railCamera_ = new RailCamera();
+	railCamera_->Initalize();
 
-	player_->Initalize(model_, textureHandle_);
+	player_ = std::make_unique<Player>();
 
-	debugCamera_ = new DebugCamera(1280, 720);
+	player_->Initalize(model_.get(), textureHandle_);
+
+	
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
@@ -41,21 +43,17 @@ void GameScene::Update() {
 
 #ifdef _DEBUG
 
-	if (input_->PushKey(DIK_SPACE)) {
-		isDebugCameraActive_ = true;
-	}
+	
 
 #endif // DEBUG
-	if (isDebugCameraActive_ == true) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-		viewProjection_.TransferMatrix();
-	} else {
-
-		viewProjection_.UpdateMatrix();
-	}
+	
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		
+		  viewProjection_.TransferMatrix();
+		//viewProjection_.UpdateMatrix();
+	
 }
 
 void GameScene::Draw() {
