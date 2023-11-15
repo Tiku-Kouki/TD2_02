@@ -7,8 +7,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 
-	delete model_;
-	delete player_;
+	
 	delete debugCamera_;
 	delete modelSkydome_;
 }
@@ -20,15 +19,21 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
 
-	model_ = Model::Create();
+	model_.reset(Model::Create());
 
 	viewProjection_.Initialize();
 
-	player_ = new Player();
+	railCamera_ = new RailCamera();
+	railCamera_->Initalize();
 
-	player_->Initalize(model_, textureHandle_);
+	player_ = std::make_unique<Player>();
 
-	debugCamera_ = new DebugCamera(1280, 720);
+	player_->Initalize(model_.get(), textureHandle_);
+	player_->Initalize(model_.get(), textureHandle_);
+
+	railCamera_->SetTarget(&player_->GetWorldTransform());
+
+	player_->SetViewProjection(&railCamera_->GetViewProjection());
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
@@ -51,16 +56,15 @@ void GameScene::Update() {
 	}
 
 #endif // DEBUG
-	if (isDebugCameraActive_ == true) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+	
+	 railCamera_->Update();
+	viewProjection_.matView = railCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 
-		viewProjection_.TransferMatrix();
-	} else {
+	viewProjection_.TransferMatrix();
+	// viewProjection_.UpdateMatrix();
 
-		viewProjection_.UpdateMatrix();
-	}
+
 }
 
 void GameScene::Draw() {

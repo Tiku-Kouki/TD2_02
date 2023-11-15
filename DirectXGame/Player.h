@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "Model.h"
 #include "WorldTransform.h"
+ #include"RailCamera.h"
 #include "Input.h"
 #include "Affine.h"
-
+ #include <list>
+#include "Windows.h"
+ #include "ViewProjection.h"
 
 class Player {
 public:
@@ -17,6 +20,12 @@ public:
 
 	void Draw(ViewProjection &viewProjection);
 
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	void SetViewProjection(const ViewProjection* viewProjection) {
+		viewProjection_ = viewProjection;
+	}
+
 private:
 
 	WorldTransform worldTransform_;
@@ -27,4 +36,6 @@ private:
 
 	Input* input_ = nullptr;
 
+	  // 　カメラのビュープロジェクション
+	const ViewProjection* viewProjection_ = nullptr;
 	};
