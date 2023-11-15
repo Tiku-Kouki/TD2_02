@@ -41,8 +41,8 @@ void RailCamera::Update() {
 		viewProjection_.rotation_.y +=
 		    (float)joyState.Gamepad.sThumbRX / SHRT_MAX * rotationSpeed.y;
 
-		viewProjection_.rotation_.z +=
-		    (float)joyState.Gamepad.sThumbRY / SHRT_MAX * rotationSpeed.x;
+		/*viewProjection_.rotation_.z +=
+		    (float)joyState.Gamepad.sThumbRY / SHRT_MAX * rotationSpeed.x;*/
 	   }
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
