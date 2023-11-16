@@ -68,14 +68,16 @@ void Player::Update() {
 	if (move.x != 0 ) {
 
 		for (int i = 0; i < 4; i++) {
-			worldTransform_[0].rotation_.y = std::atan2(move.x, move.z);
+			worldTransform_[0].rotation_.y = std::atan2(
+			    worldTransform_[1].translation_.x - worldTransform_[0].translation_.x,
+			    worldTransform_[1].translation_.z - worldTransform_[0].translation_.z);
 		}
 	}
 	
 	for (int i = 0; i < 2; i++) {
-		worldTransform_[0].translation_.x = cosf(theta) * 50 + (worldTransform_[1].translation_.x);
+		worldTransform_[0].translation_.x = cosf(theta) * 40 + (worldTransform_[1].translation_.x);
 		worldTransform_[0].translation_.y += move.y;
-		worldTransform_[0].translation_.z = sinf(theta) * 50 + (worldTransform_[1].translation_.z);
+		worldTransform_[0].translation_.z = sinf(theta) * 40 + (worldTransform_[1].translation_.z);
 
 		worldTransform_[i].UpdateMatrix();
 	}
