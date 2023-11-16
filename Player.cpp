@@ -1,7 +1,8 @@
 ﻿#include "Player.h"
 #include "cassert"
 #include"ImGuiManager.h"
-
+ #define _USE_MATH_DEFINES
+#include<math.h>
 
 void Player::Initalize(Model* model, uint32_t textureHandle) { 
 	
@@ -9,14 +10,24 @@ void Player::Initalize(Model* model, uint32_t textureHandle) {
 	model_ = model;
 	textureHandle_ = textureHandle;
 
-	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	
 
-	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
+	
+		worldTransform_[0].scale_ = {1.0f, 1.0f, 1.0f};
 
-	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
+		worldTransform_[0].rotation_ = {0.0f, 0.0f, 0.0f};
 
-	worldTransform_.Initialize();
+		worldTransform_[0].translation_ = {0.0f, 0.0f, 0.0f};
+	  
+		 worldTransform_[1].scale_ = {1.0f, 1.0f, 1.0f};
 
+	    worldTransform_[1].rotation_ = {0.0f, 0.0f, 0.0f};
+
+	    worldTransform_[1].translation_ = {0.0f, 0.0f, 0.0f};
+	  
+		for (int i = 0; i < 2; i++) {
+		worldTransform_[i].Initialize();
+		}
 	input_ = Input::GetInstance();
 
 
@@ -27,42 +38,52 @@ void Player::Update() {
 
 	Vector3 move = {0, 0, 0};
 
+	
+
 	const float kCharacterSpeed = 0.2f;
 
+	 
+
 	if (input_->PushKey(DIK_LEFT)) {
+		theta -= 1.0f / 180.0f * (float)M_PI;
 		move.x -= kCharacterSpeed;
 	} else if (input_->PushKey(DIK_RIGHT)) {
+		theta += 1.0f / 180.0f * (float)M_PI;
 		move.x += kCharacterSpeed;
 	}
-	if (input_->PushKey(DIK_UP)) {
+	/*if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
 	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
+	}*/
+	
+	Matrix4x4 rotateXMatrix = MakeRotateXMatrix(viewProjection_->rotation_.x);
+	Matrix4x4 rotateYMatrix = MakeRotateYMatrix(viewProjection_->rotation_.y);
+	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(viewProjection_->rotation_.z);
+
+	Matrix4x4 rotateXYZMatrix = Multiply(rotateXMatrix, Multiply(rotateYMatrix, rotateZMatrix));
+
+	move = TransformNormal(move, rotateXYZMatrix);
+
+	if (move.x != 0 ) {
+
+		for (int i = 0; i < 4; i++) {
+			worldTransform_[0].rotation_.y = std::atan2(move.x, move.z);
+		}
 	}
-	worldTransform_.translation_.x += move.x;
-	worldTransform_.translation_.y += move.y;
-	worldTransform_.translation_.z += move.z;
-
-	const float kMoveLimitX = 20;
-	const float kMoveLimitY = 18;
-
-	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
-	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
-	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
-	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
-
-
-
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	
-	worldTransform_.TransferMatrix();
+	for (int i = 0; i < 2; i++) {
+		worldTransform_[0].translation_.x = cosf(theta) * 50 + (worldTransform_[1].translation_.x);
+		worldTransform_[0].translation_.y += move.y;
+		worldTransform_[0].translation_.z = sinf(theta) * 50 + (worldTransform_[1].translation_.z);
 
+		worldTransform_[i].UpdateMatrix();
+	}
+
+
+	
 	ImGui::Begin("du");
-	ImGui::Text(
-	    " x: %f,y: %f z: %f", worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z);
-	
+	ImGui::DragFloat3("dx", &worldTransform_[0].translation_.x, 0.1f);
 	ImGui::End();
 
 
@@ -71,7 +92,7 @@ void Player::Update() {
 void Player::Draw(ViewProjection &viewProjection) {
 	
 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	model_->Draw(worldTransform_[0], viewProjection, textureHandle_);
 	
 
 }

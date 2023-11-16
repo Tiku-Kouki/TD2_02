@@ -17,7 +17,7 @@ void RailCamera::Update() {
 
 	if (target_) {
 
-		Vector3 offset = {0.0f, 0.0f, -20.0f};
+		Vector3 offset = {0.0f, 0.0f, -10.0f};
 
 		Matrix4x4 rotateXMatrix = MakeRotateXMatrix(viewProjection_.rotation_.x);
 		Matrix4x4 rotateYMatrix = MakeRotateYMatrix(viewProjection_.rotation_.y);
@@ -40,9 +40,12 @@ void RailCamera::Update() {
 		viewProjection_.rotation_.y +=
 		    (float)joyState.Gamepad.sThumbRX / SHRT_MAX * rotationSpeed.y;
 
-		/*viewProjection_.rotation_.z +=
+		/*viewProjection_.rotation_.x +=
 		    (float)joyState.Gamepad.sThumbRY / SHRT_MAX * rotationSpeed.x;*/
 	}
+	Vector3 rotationSpeed = {0.05f, 0.05f, 0.05f};
+	
+
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
