@@ -29,7 +29,9 @@ void GameScene::Initialize() {
 	player_ = std::make_unique<Player>();
 
 	player_->Initalize(model_.get(), textureHandle_);
-	player_->Initalize(model_.get(), textureHandle_);
+	
+	//
+	//player_->SetTarget();
 
 	railCamera_->SetTarget(&player_->GetWorldTransform());
 
