@@ -3,13 +3,13 @@
 #include"ImGuiManager.h"
 
 
-void Player::Initalize(Model* model, uint32_t textureHandle) { 
+void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
 	
 	assert(model); 
 	model_ = model;
 	textureHandle_ = textureHandle;
 
-	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
@@ -71,7 +71,7 @@ void Player::Update() {
 void Player::Draw(ViewProjection &viewProjection) {
 	
 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection);
 	
 
 }

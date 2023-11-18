@@ -8,14 +8,15 @@
 class Player {
 public:
 
-	void Initalize(Model* model, uint32_t textureHandle);
+	void Initalize(Model* model, uint32_t textureHandle,Vector3 pos);
 
 
 	void Update();
 
 
-
 	void Draw(ViewProjection &viewProjection);
+
+	void GetEnemyPosition(Vector3 pos) { Enemypos = pos; };
 
 private:
 
@@ -27,4 +28,6 @@ private:
 
 	Input* input_ = nullptr;
 
-	};
+	Vector3 Enemypos = {};
+
+};

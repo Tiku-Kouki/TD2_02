@@ -11,22 +11,28 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	delete modelSkydome_;
+	delete ModelPlayer_;
 }
 
 void GameScene::Initialize() {
-
+	Vector3 playerPosition(0, 0, 15);
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
 
 	model_ = Model::Create();
+	ModelPlayer_ = Model::CreateFromOBJ("Player", true);
 
 	viewProjection_.Initialize();
 
 	player_ = new Player();
 
-	player_->Initalize(model_, textureHandle_);
+	player_->Initalize(ModelPlayer_, textureHandle_,playerPosition);
+
+	enemy_ = new Enemy();
+
+	enemy_->Initialize(model_, textureHandle_,);
 
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -43,6 +49,8 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 	player_->Update();
+
+	enemy_->Update();
 
 #ifdef _DEBUG
 
@@ -61,6 +69,9 @@ void GameScene::Update() {
 
 		viewProjection_.UpdateMatrix();
 	}
+
+
+
 }
 
 void GameScene::Draw() {

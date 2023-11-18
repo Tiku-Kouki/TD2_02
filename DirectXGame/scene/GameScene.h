@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include "Enemy.h"
 #include"DebugCamera.h"
 #include <Skydome.h>
 
@@ -57,7 +58,10 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	WorldTransform worldTransform_;
 	Player* player_ = nullptr;
+	Model* ModelPlayer_ = nullptr;
 	
+	Enemy* enemy_ = nullptr;
+
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 
