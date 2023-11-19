@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "cassert"
-#include"ImGuiManager.h"
+#include "ImGuiManager.h"
+#include <cmath>
 
 
 void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
@@ -13,7 +14,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) {
 
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
-	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
+	worldTransform_.translation_ = {pos};
 
 	worldTransform_.Initialize();
 
@@ -30,9 +31,11 @@ void Player::Update() {
 	const float kCharacterSpeed = 0.2f;
 
 	if (input_->PushKey(DIK_LEFT)) {
-		move.x -= kCharacterSpeed;
+	/*	move.x -= kCharacterSpeed;*/
+		angle -= 0.1f;
 	} else if (input_->PushKey(DIK_RIGHT)) {
-		move.x += kCharacterSpeed;
+		/*move.x += kCharacterSpeed;*/
+		angle += 0.1f;
 	}
 	if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
@@ -51,6 +54,8 @@ void Player::Update() {
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
+	worldTransform_.translation_.x = Enemypos.x + std::cos(angle) * 50.0f;
+	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
 
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
@@ -64,6 +69,8 @@ void Player::Update() {
 	    worldTransform_.translation_.z);
 	
 	ImGui::End();
+
+
 
 
 }

@@ -9,6 +9,7 @@ GameScene::~GameScene() {
 
 	delete model_;
 	delete player_;
+	delete enemy_;
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete ModelPlayer_;
@@ -32,7 +33,7 @@ void GameScene::Initialize() {
 
 	enemy_ = new Enemy();
 
-	enemy_->Initialize(model_, textureHandle_,);
+	enemy_->Initialize(model_, textureHandle_, {0, 0, 50});
 
 	debugCamera_ = new DebugCamera(1280, 720);
 
@@ -48,9 +49,11 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
+	enemy_->Update();
+
 	player_->Update();
 
-	enemy_->Update();
+	player_->SetEnemyPosition(enemy_->GetWorldPosition());
 
 #ifdef _DEBUG
 
@@ -102,6 +105,8 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player_->Draw(viewProjection_);
+
+	enemy_->Draw(viewProjection_);
 
 	skydome_->Draw(viewProjection_);
 

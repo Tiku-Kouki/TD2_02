@@ -16,7 +16,7 @@ public:
 
 	void Draw(ViewProjection &viewProjection);
 
-	void GetEnemyPosition(Vector3 pos) { Enemypos = pos; };
+	void SetEnemyPosition(Vector3 pos) { Enemypos = pos; };
 
 private:
 
@@ -30,4 +30,5 @@ private:
 
 	Vector3 Enemypos = {};
 
+	float angle = 0.0f;
 };

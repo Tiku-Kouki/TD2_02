@@ -17,8 +17,8 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle, Vector3 pos) {
 
 }
 
-void Enemy::Update() {
-
+void Enemy::Update() { 
+	worldTransform_.UpdateMatrix(); 
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
