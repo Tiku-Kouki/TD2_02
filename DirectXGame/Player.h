@@ -18,6 +18,8 @@ public:
 
 	void SetEnemyPosition(Vector3 pos) { Enemypos = pos; };
 
+	Vector3 GetWorldPosition();
+
 private:
 
 	WorldTransform worldTransform_;
