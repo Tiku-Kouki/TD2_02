@@ -20,21 +20,27 @@ public:
 
 	void Draw(ViewProjection &viewProjection);
 
-	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+	const WorldTransform& GetWorldTransform() { return worldTransform_[0]; }
 
 	void SetViewProjection(const ViewProjection* viewProjection) {
 		viewProjection_ = viewProjection;
 	}
 
+	void SetTarget(const WorldTransform* target) { target_ = target; }
+
 private:
 
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_[2];
+
+	const WorldTransform* target_ = nullptr;
 
 	Model* model_ = nullptr;
 
 	uint32_t textureHandle_ = 0u;
 
 	Input* input_ = nullptr;
+
+	float theta = 0;
 
 	  // 　カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
