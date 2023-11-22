@@ -1,6 +1,8 @@
 #include "RailCamera.h"
 #include "ImGuiManager.h"
 #include "cassert"
+#include "Mymath.h"
+#include "Input.h"
 
 void RailCamera::Initalize() {
 

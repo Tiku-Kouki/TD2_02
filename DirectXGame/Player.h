@@ -1,23 +1,20 @@
 ﻿#pragma once
-#include "Model.h"
-#include "WorldTransform.h"
- #include"RailCamera.h"
-#include "Input.h"
 #include "Affine.h"
- #include <list>
+#include "Input.h"
+#include "Model.h"
+#include "RailCamera.h"
+#include "ViewProjection.h"
 #include "Windows.h"
- #include "ViewProjection.h"
+#include "WorldTransform.h"
+#include <list>
 
 class Player {
 public:
-
-	void Initalize(Model* model, uint32_t textureHandle,Vector3 pos);
-
+	void Initalize(Model* model, uint32_t textureHandle, Vector3 pos);
 
 	void Update();
 
-
-	void Draw(ViewProjection &viewProjection);
+	void Draw(ViewProjection& viewProjection);
 
 	void SetEnemyPosition(Vector3 pos) { Enemypos = pos; };
 
@@ -30,7 +27,6 @@ public:
 	}
 
 private:
-
 	WorldTransform worldTransform_;
 
 	Model* model_ = nullptr;
@@ -42,7 +38,7 @@ private:
 	Vector3 Enemypos = {};
 
 	float angle = 0.0f;
-};
-	  // 　カメラのビュープロジェクション
+
+	// 　カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
-	};
+};
