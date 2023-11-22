@@ -84,11 +84,11 @@ void Player::Update() {
 	}
 
 
-	
+#ifdef _DEBUG
 	ImGui::Begin("du");
 	ImGui::DragFloat3("dx", &worldTransform_[0].translation_.x, 0.1f);
 	ImGui::End();
-
+#endif
 
 }
 
