@@ -69,9 +69,9 @@ void GameScene::Update() {
 	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 
 	viewProjection_.TransferMatrix();
-	// viewProjection_.UpdateMatrix();
+	
 
-	viewProjection_.UpdateMatrix();
+	//viewProjection_.UpdateMatrix();
 }
 
 void GameScene::Draw() {

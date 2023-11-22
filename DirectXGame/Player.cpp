@@ -1,7 +1,8 @@
 ﻿#include "Player.h"
 #include "cassert"
 #include "ImGuiManager.h"
-
+ #define _USE_MATH_DEFINES
+#include <math.h>
 
 void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
 	
@@ -9,7 +10,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) {
 	model_ = model;
 	textureHandle_ = textureHandle;
 
-	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
+	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
 
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
@@ -31,10 +32,10 @@ void Player::Update() {
 
 	if (input_->PushKey(DIK_LEFT)) {
 	/*	move.x -= kCharacterSpeed;*/
-		angle -= 0.1f;
+		angle -= 1.0f / 180.0f * (float)M_PI;
 	} else if (input_->PushKey(DIK_RIGHT)) {
 		/*move.x += kCharacterSpeed;*/
-		angle += 0.1f;
+		angle += 1.0f / 180.0f * (float)M_PI;
 	}
 	if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
@@ -45,14 +46,21 @@ void Player::Update() {
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
 
-	/*const float kMoveLimitX = 20;
-	const float kMoveLimitY = 18;
+	Matrix4x4 rotateXMatrix = MakeRotateXMatrix(viewProjection_->rotation_.x);
+	Matrix4x4 rotateYMatrix = MakeRotateYMatrix(viewProjection_->rotation_.y);
+	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(viewProjection_->rotation_.z);
 
-	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
-	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
-	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
-	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);*/
+	Matrix4x4 rotateXYZMatrix = Multiply(rotateXMatrix, Multiply(rotateYMatrix, rotateZMatrix));
 
+	//move = TransformNormal(move, rotateXYZMatrix);
+
+	
+
+			worldTransform_.rotation_.y = std::atan2(
+			    Enemypos.x - worldTransform_.translation_.x,
+			    Enemypos.z - worldTransform_.translation_.z);
+		
+	
 	worldTransform_.translation_.x = Enemypos.x + std::cos(angle) * 50.0f;
 	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
 

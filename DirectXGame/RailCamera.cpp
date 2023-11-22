@@ -31,6 +31,7 @@ void RailCamera::Update() {
 
 		viewProjection_.translation_ = Add(target_->translation_, offset);
 		// viewProjection_.translation_.y = 0.0f;
+		viewProjection_.rotation_.y = (target_->rotation_.y);
 	}
 
 	XINPUT_STATE joyState;
