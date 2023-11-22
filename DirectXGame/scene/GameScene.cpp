@@ -1,15 +1,11 @@
 #include "GameScene.h"
+#include "AxisIndicator.h"
 #include "TextureManager.h"
 #include <cassert>
-#include"AxisIndicator.h"
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-
-	delete model_;
-	delete player_;
-	delete enemy_;
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete ModelPlayer_;
@@ -22,22 +18,25 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
 
-	model_ = Model::Create();
 	ModelPlayer_ = Model::CreateFromOBJ("Player", true);
+	model_.reset(Model::Create());
 
 	viewProjection_.Initialize();
 
-	player_ = new Player();
+	railCamera_ = new RailCamera();
+	railCamera_->Initalize();
 
-	player_->Initalize(ModelPlayer_, textureHandle_,playerPosition);
 
-	enemy_ = new Enemy();
+	player_ = std::make_unique<Player>();
+	player_->Initalize(ModelPlayer_, textureHandle_, playerPosition);
 
-	enemy_->Initialize(model_, textureHandle_, {0, 0, 50});
+	railCamera_->SetTarget(&player_->GetWorldTransform());
 
-	enemy_->SetPlayer(player_);
-
-	debugCamera_ = new DebugCamera(1280, 720);
+	player_->SetViewProjection(&railCamera_->GetViewProjection());
+	enemyModel_.reset(Model::Create());
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Initialize(enemyModel_.get(), textureHandle_, {0, 0, 50});
+	enemy_->SetPlayer(player_.get());
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
@@ -64,19 +63,15 @@ void GameScene::Update() {
 	}
 
 #endif // DEBUG
-	if (isDebugCameraActive_ == true) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
-		viewProjection_.TransferMatrix();
-	} else {
+	railCamera_->Update();
+	viewProjection_.matView = railCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 
-		viewProjection_.UpdateMatrix();
-	}
+	viewProjection_.TransferMatrix();
+	// viewProjection_.UpdateMatrix();
 
-
-
+	viewProjection_.UpdateMatrix();
 }
 
 void GameScene::Draw() {

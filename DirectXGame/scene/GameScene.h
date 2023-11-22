@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include"DebugCamera.h"
 #include <Skydome.h>
+#include "RailCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -50,20 +51,25 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 
 	uint32_t textureHandle_ = 0;
-	Model* model_ = nullptr;
 
-	Skydome* skydome_ = nullptr;
-	Model* modelSkydome_ = nullptr;
 	
 	ViewProjection viewProjection_;
 	WorldTransform worldTransform_;
-	Player* player_ = nullptr;
+	Skydome* skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 	Model* ModelPlayer_ = nullptr;
+	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Model> enemyModel_ = nullptr;
 	
-	Enemy* enemy_ = nullptr;
-
+	std::unique_ptr<Enemy> enemy_ = nullptr;
+	std::unique_ptr<Player> player_ = nullptr;
+	
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
+
+	
+
+	RailCamera* railCamera_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
