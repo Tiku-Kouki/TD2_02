@@ -28,9 +28,7 @@ void RailCamera::Update() {
 		offset = TransformNormal(offset, rotateXYZMatrix);
 
 		viewProjection_.translation_ = Add(target_->translation_, offset);
-		
 		// viewProjection_.translation_.y = 0.0f;
-		viewProjection_.rotation_.y = (target_->rotation_.y);
 	}
 
 	XINPUT_STATE joyState;
@@ -42,12 +40,9 @@ void RailCamera::Update() {
 		viewProjection_.rotation_.y +=
 		    (float)joyState.Gamepad.sThumbRX / SHRT_MAX * rotationSpeed.y;
 
-		/*viewProjection_.rotation_.x +=
+		/*viewProjection_.rotation_.z +=
 		    (float)joyState.Gamepad.sThumbRY / SHRT_MAX * rotationSpeed.x;*/
 	}
-	Vector3 rotationSpeed = {0.05f, 0.05f, 0.05f};
-	
-
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
@@ -60,8 +55,8 @@ void RailCamera::Update() {
 #ifdef _DEBUG
 	ImGui::Begin("Camera");
 
-	ImGui::DragFloat3("Translation", &viewProjection_.translation_.x, 0.01f);
-	ImGui::DragFloat3("Rotation", &viewProjection_.rotation_.x, 0.01f);
+	ImGui::DragFloat3("Translation", &worldTransform_.translation_.x, 0.01f);
+	ImGui::DragFloat3("Rotation", &worldTransform_.rotation_.x, 0.01f);
 
 	ImGui::End();
 #endif
