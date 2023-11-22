@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Model.h"
 #include "WorldTransform.h"
 #include "Input.h"
@@ -34,6 +34,6 @@ private:
 
 	float angle = 0.0f;
 
-	  // @ƒJƒƒ‰‚Ìƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“
+	  // ã€€ã‚«ãƒ¡ãƒ©ã®ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³
 	const ViewProjection* viewProjection_ = nullptr;
 };
