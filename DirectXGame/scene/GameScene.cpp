@@ -1,15 +1,16 @@
 #include "GameScene.h"
+#include "AxisIndicator.h"
 #include "TextureManager.h"
 #include <cassert>
-#include"AxisIndicator.h"
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 
-	
+	delete railCamera_;
 	delete debugCamera_;
 	delete modelSkydome_;
+	delete skydome_;
 }
 
 void GameScene::Initialize() {
@@ -29,9 +30,9 @@ void GameScene::Initialize() {
 	player_ = std::make_unique<Player>();
 
 	player_->Initalize(model_.get(), textureHandle_);
-	
+
 	//
-	//player_->SetTarget();
+	// player_->SetTarget();
 
 	railCamera_->SetTarget(&player_->GetWorldTransform());
 
@@ -58,15 +59,13 @@ void GameScene::Update() {
 	}
 
 #endif // DEBUG
-	
-	 railCamera_->Update();
+
+	railCamera_->Update();
 	viewProjection_.matView = railCamera_->GetViewProjection().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 
 	viewProjection_.TransferMatrix();
 	// viewProjection_.UpdateMatrix();
-
-
 }
 
 void GameScene::Draw() {
