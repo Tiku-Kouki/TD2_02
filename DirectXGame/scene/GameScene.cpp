@@ -7,18 +7,24 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 
+	delete model_;
+	delete player_;
+	delete enemy_;
 	
 	delete debugCamera_;
 	delete modelSkydome_;
+	delete ModelPlayer_;
 }
 
 void GameScene::Initialize() {
-
+	Vector3 playerPosition(0, 0, 15);
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
 
+	model_ = Model::Create();
+	ModelPlayer_ = Model::CreateFromOBJ("Player", true);
 	model_.reset(Model::Create());
 
 	viewProjection_.Initialize();
@@ -26,6 +32,13 @@ void GameScene::Initialize() {
 	railCamera_ = new RailCamera();
 	railCamera_->Initalize();
 
+	player_->Initalize(ModelPlayer_, textureHandle_,playerPosition);
+
+	enemy_ = new Enemy();
+
+	enemy_->Initialize(model_, textureHandle_, {0, 0, 50});
+
+	enemy_->SetPlayer(player_);
 	player_ = std::make_unique<Player>();
 
 	player_->Initalize(model_.get(), textureHandle_);
@@ -47,7 +60,11 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
+	enemy_->Update();
+
 	player_->Update();
+
+	player_->SetEnemyPosition(enemy_->GetWorldPosition());
 
 #ifdef _DEBUG
 
@@ -63,6 +80,11 @@ void GameScene::Update() {
 
 	viewProjection_.TransferMatrix();
 	// viewProjection_.UpdateMatrix();
+
+
+		viewProjection_.UpdateMatrix();
+	}
+
 
 
 }
@@ -95,6 +117,8 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player_->Draw(viewProjection_);
+
+	enemy_->Draw(viewProjection_);
 
 	skydome_->Draw(viewProjection_);
 

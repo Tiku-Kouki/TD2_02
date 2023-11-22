@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include "Enemy.h"
 #include"DebugCamera.h"
 #include <Skydome.h>
 #include "RailCamera.h"
@@ -57,6 +58,11 @@ private: // メンバ変数
 	
 	ViewProjection viewProjection_;
 	WorldTransform worldTransform_;
+	Player* player_ = nullptr;
+	Model* ModelPlayer_ = nullptr;
+	
+	Enemy* enemy_ = nullptr;
+
 	std::unique_ptr<Player> player_ = nullptr;
 	
 	bool isDebugCameraActive_ = false;
