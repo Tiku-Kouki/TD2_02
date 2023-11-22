@@ -45,10 +45,13 @@ void Player::Update() {
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
 
-	const float kMoveLimitX = 20;
+	/*const float kMoveLimitX = 20;
 	const float kMoveLimitY = 18;
 
-	
+	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
+	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
+	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
+	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);*/
 
 	worldTransform_.translation_.x = Enemypos.x + std::cos(angle) * 50.0f;
 	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
