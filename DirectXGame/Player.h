@@ -34,3 +34,6 @@ private:
 
 	float angle = 0.0f;
 };
+	  // 　カメラのビュープロジェクション
+	const ViewProjection* viewProjection_ = nullptr;
+};
