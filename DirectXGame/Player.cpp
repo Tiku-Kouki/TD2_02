@@ -1,7 +1,6 @@
 ﻿#include "Player.h"
 #include "cassert"
 #include "ImGuiManager.h"
-#include <cmath>
 
 
 void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
@@ -58,10 +57,7 @@ void Player::Update() {
 	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
 
 
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-	
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
 
 	ImGui::Begin("du");
 	ImGui::Text(
