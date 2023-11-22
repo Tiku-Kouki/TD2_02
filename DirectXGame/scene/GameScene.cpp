@@ -7,6 +7,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete debugCamera_;
+	delete railCamera_;
 	delete modelSkydome_;
 	delete ModelPlayer_;
 }

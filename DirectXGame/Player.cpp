@@ -66,14 +66,14 @@ void Player::Update() {
 
 
 	worldTransform_.UpdateMatrix();
-
+#ifdef _DEBUG
 	ImGui::Begin("du");
 	ImGui::Text(
 	    " x: %f,y: %f z: %f", worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z);
 	
 	ImGui::End();
-
+#endif
 
 
 
