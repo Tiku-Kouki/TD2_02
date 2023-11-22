@@ -19,6 +19,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle) {
 
 		worldTransform_[0].translation_ = {0.0f, 0.0f, 0.0f};
 	  
+		//enemy想定のworldTransform_
 		 worldTransform_[1].scale_ = {1.0f, 1.0f, 1.0f};
 
 	    worldTransform_[1].rotation_ = {0.0f, 0.0f, 0.0f};
