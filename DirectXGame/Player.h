@@ -11,14 +11,17 @@
 class Player {
 public:
 
-	void Initalize(Model* model, uint32_t textureHandle);
+	void Initalize(Model* model, uint32_t textureHandle,Vector3 pos);
 
 
 	void Update();
 
 
-
 	void Draw(ViewProjection &viewProjection);
+
+	void SetEnemyPosition(Vector3 pos) { Enemypos = pos; };
+
+	Vector3 GetWorldPosition();
 
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
@@ -36,6 +39,10 @@ private:
 
 	Input* input_ = nullptr;
 
+	Vector3 Enemypos = {};
+
+	float angle = 0.0f;
+};
 	  // 　カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
 	};

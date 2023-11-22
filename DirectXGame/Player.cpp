@@ -1,19 +1,20 @@
 ﻿#include "Player.h"
 #include "cassert"
-#include"ImGuiManager.h"
+#include "ImGuiManager.h"
+#include <cmath>
 
 
-void Player::Initalize(Model* model, uint32_t textureHandle) { 
+void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
 	
 	assert(model); 
 	model_ = model;
 	textureHandle_ = textureHandle;
 
-	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
-	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
+	worldTransform_.translation_ = {pos};
 
 	worldTransform_.Initialize();
 
@@ -30,9 +31,11 @@ void Player::Update() {
 	const float kCharacterSpeed = 0.2f;
 
 	if (input_->PushKey(DIK_LEFT)) {
-		move.x -= kCharacterSpeed;
+	/*	move.x -= kCharacterSpeed;*/
+		angle -= 0.1f;
 	} else if (input_->PushKey(DIK_RIGHT)) {
-		move.x += kCharacterSpeed;
+		/*move.x += kCharacterSpeed;*/
+		angle += 0.1f;
 	}
 	if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
@@ -51,6 +54,8 @@ void Player::Update() {
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
+	worldTransform_.translation_.x = Enemypos.x + std::cos(angle) * 50.0f;
+	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
 
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
@@ -66,14 +71,25 @@ void Player::Update() {
 	ImGui::End();
 
 
+
+
 }
 
 void Player::Draw(ViewProjection &viewProjection) {
 	
 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection);
 	
 
 }
 
+Vector3 Player::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
+	return worldPos;
+}
