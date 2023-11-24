@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include "PlayerBullet.h"
 #include "cassert"
 #include "ImGuiManager.h"
 
@@ -18,6 +19,9 @@ void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) {
 	worldTransform_.Initialize();
 
 	input_ = Input::GetInstance();
+
+	model_ = Model::Create();
+
 
 	Life_ = 3;
 	

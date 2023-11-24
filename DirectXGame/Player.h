@@ -41,6 +41,12 @@ private:
 
 	Model* model_ = nullptr;
 
+	Player* player_ = nullptr;
+
+	Model* ModelPlayer_ = nullptr;
+
+	Model* ModelPlayerBullet_ = nullptr;
+
 	uint32_t textureHandle_ = 0u;
 
 	Input* input_ = nullptr;
@@ -51,6 +57,7 @@ private:
 
 	int32_t Life_ = 0;
 
+	//デスフラグ
 	bool isDead_ = false;
 
 	// 　カメラのビュープロジェクション
