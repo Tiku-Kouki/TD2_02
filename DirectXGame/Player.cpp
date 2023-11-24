@@ -19,7 +19,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) {
 
 	input_ = Input::GetInstance();
 
-
+	Life_ = 3;
 	
 }
 
@@ -88,4 +88,11 @@ Vector3 Player::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void Player::OnCollision() { 
+	Life_--;
+	if (Life_ <= 0) {
+		isDead_ = true;
+	}
 }

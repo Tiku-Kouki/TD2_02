@@ -26,6 +26,16 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
+	//ライフ
+	void SetLife(int32_t Life) { Life_ = Life; };
+
+	int32_t GetLife() { return Life_; };
+
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	bool IsDead() const { return isDead_; }
+
 private:
 	WorldTransform worldTransform_;
 
@@ -38,6 +48,10 @@ private:
 	Vector3 Enemypos = {};
 
 	float angle = 0.0f;
+
+	int32_t Life_ = 0;
+
+	bool isDead_ = false;
 
 	// 　カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;

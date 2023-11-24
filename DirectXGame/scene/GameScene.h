@@ -67,7 +67,12 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 
-	
+	//ライフ
+	uint32_t LifeHandle_;
+
+	Sprite* sprite0 = nullptr;
+	Sprite* sprite1 = nullptr;
+	Sprite* sprite2 = nullptr;
 
 	RailCamera* railCamera_ = nullptr;
 

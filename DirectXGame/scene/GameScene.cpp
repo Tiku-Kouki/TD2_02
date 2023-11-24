@@ -46,6 +46,15 @@ void GameScene::Initialize() {
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_);
 	skydome_->Update();
+
+	//ライフ
+	LifeHandle_ = TextureManager::Load("UI/HP.png");
+
+	sprite0 = Sprite::Create(LifeHandle_, {10.0f, 50.0f});
+	sprite1 = Sprite::Create(LifeHandle_, {40.0f, 50.0f});
+	sprite2 = Sprite::Create(LifeHandle_, {80.0f, 50.0f});
+
+
 }
 
 void GameScene::Update() {
@@ -114,6 +123,10 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+
+	sprite0->Draw();
+	sprite1->Draw();
+	sprite2->Draw();
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
