@@ -20,7 +20,7 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("mario.png");
 
 	ModelPlayer_ = Model::CreateFromOBJ("Player", true);
-	ModelPlayerBullet_ = Model::CreateFromOBJ("PlayerBullet.png", true);
+	ModelPlayerBullet_ = Model::CreateFromOBJ("PlayerBullet", true);
 	model_.reset(Model::Create());
 
 	viewProjection_.Initialize();

@@ -21,9 +21,6 @@ void Player::Initalize(Model* model,Model* PlayerBullet, uint32_t textureHandle,
 
 	input_ = Input::GetInstance();
 
-	model_ = Model::Create();
-
-
 	Life_ = 3;
 	
 	
