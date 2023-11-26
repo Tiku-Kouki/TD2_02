@@ -10,15 +10,20 @@
 
 class Player {
 public:
-	void Initalize(Model* model, uint32_t textureHandle, Vector3 pos);
+	void Initalize(Model* model,Model* ModelPlayerBullet_, uint32_t textureHandle, Vector3 pos);
 
 	void Update();
 
 	void Draw(ViewProjection& viewProjection);
 
+	void Attack();
+
 	void SetEnemyPosition(Vector3 pos) { Enemypos = pos; };
 
 	Vector3 GetWorldPosition();
+
+	//弾リストを取得
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
 
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
@@ -44,6 +49,10 @@ private:
 	Player* player_ = nullptr;
 
 	Model* ModelPlayer_ = nullptr;
+
+	std::list<PlayerBullet*> bullets_;
+
+	int32_t BulletTimer = 0;
 
 	Model* ModelPlayerBullet_ = nullptr;
 

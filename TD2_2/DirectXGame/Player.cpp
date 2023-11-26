@@ -4,9 +4,10 @@
 #include "ImGuiManager.h"
 
 
-void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
+void Player::Initalize(Model* model,Model* PlayerBullet, uint32_t textureHandle,Vector3 pos) { 
 	
-	assert(model); 
+	assert(model);
+	assert(ModelPlayerBullet_);
 	model_ = model;
 	textureHandle_ = textureHandle;
 
@@ -32,6 +33,16 @@ void Player::Update() {
 	Vector3 move = {0, 0, 0};
 
 	const float kCharacterSpeed = 0.2f;
+
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 
 	if (input_->PushKey(DIK_LEFT)) {
 	/*	move.x -= kCharacterSpeed;*/
@@ -60,6 +71,14 @@ void Player::Update() {
 	worldTransform_.translation_.x = Enemypos.x + std::cos(angle) * 50.0f;
 	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
 
+	//キャラクターの攻撃処理
+	Attack();
+
+	//弾更新
+	for (PlayerBullet* bullet : bullets_)
+	{
+		bullet->Update();
+	}
 
 	worldTransform_.UpdateMatrix();
 

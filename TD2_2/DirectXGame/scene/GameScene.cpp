@@ -9,6 +9,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete ModelPlayer_;
+	delete ModelPlayerBullet_;
 }
 
 void GameScene::Initialize() {
@@ -28,7 +29,7 @@ void GameScene::Initialize() {
 
 
 	player_ = std::make_unique<Player>();
-	player_->Initalize(ModelPlayer_, textureHandle_, playerPosition);
+	player_->Initalize(ModelPlayer_,ModelPlayerBullet_, textureHandle_, playerPosition);
 
 	railCamera_->SetTarget(&player_->GetWorldTransform());
 

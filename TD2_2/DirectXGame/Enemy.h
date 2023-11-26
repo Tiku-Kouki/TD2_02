@@ -1,6 +1,7 @@
 #pragma once
 #include "WorldTransform.h"
 #include "Model.h"
+#include "Enemy.h"
 #include "EnemyBullet.h"
 #include <list>
 

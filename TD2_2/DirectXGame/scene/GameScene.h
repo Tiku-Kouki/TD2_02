@@ -58,6 +58,7 @@ private: // メンバ変数
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* ModelPlayer_ = nullptr;
+	Model* ModelPlayerBullet_ = nullptr;
 	std::unique_ptr<Model> model_ = nullptr;
 	std::unique_ptr<Model> enemyModel_ = nullptr;
 	
