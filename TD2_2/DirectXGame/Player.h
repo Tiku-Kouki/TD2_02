@@ -2,6 +2,7 @@
 #include "Affine.h"
 #include "Input.h"
 #include "Model.h"
+#include "PlayerBullet.h"
 #include "RailCamera.h"
 #include "ViewProjection.h"
 #include "Windows.h"

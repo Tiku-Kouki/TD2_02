@@ -1,5 +1,4 @@
 ﻿#include "Player.h"
-#include "PlayerBullet.h"
 #include "cassert"
 #include "ImGuiManager.h"
 
@@ -7,8 +6,9 @@
 void Player::Initalize(Model* model,Model* PlayerBullet, uint32_t textureHandle,Vector3 pos) { 
 	
 	assert(model);
-	assert(ModelPlayerBullet_);
+	assert(PlayerBullet);
 	model_ = model;
+	ModelPlayerBullet_ = PlayerBullet;
 	textureHandle_ = textureHandle;
 
 	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
@@ -25,6 +25,7 @@ void Player::Initalize(Model* model,Model* PlayerBullet, uint32_t textureHandle,
 
 
 	Life_ = 3;
+	
 	
 }
 
@@ -119,3 +120,5 @@ void Player::OnCollision() {
 		isDead_ = true;
 	}
 }
+
+void Player::Attack() {}
