@@ -97,6 +97,10 @@ void Player::Draw(ViewProjection &viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection);
 	
+	for (PlayerBullet* bullet : bullets_)
+	{
+		bullet->Draw(viewProjection);
+	}
 
 }
 

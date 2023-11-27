@@ -49,7 +49,7 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelSkydome_);
 	skydome_->Update();
 
-	//ライフ
+	//時機ライフ
 	LifeHandle_ = TextureManager::Load("UI/HP.png");
 
 	sprite0 = Sprite::Create(LifeHandle_, {10.0f, 50.0f});
