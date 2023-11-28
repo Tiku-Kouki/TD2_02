@@ -21,6 +21,7 @@ void GameScene::Initialize() {
 
 	ModelPlayer_ = Model::CreateFromOBJ("Player", true);
 	ModelPlayerBullet_ = Model::CreateFromOBJ("PlayerBullet", true);
+	enemyModel_.reset(Model::CreateFromOBJ("Enemybody",true));
 	model_.reset(Model::Create());
 
 	viewProjection_.Initialize();
@@ -35,7 +36,6 @@ void GameScene::Initialize() {
 	railCamera_->SetTarget(&player_->GetWorldTransform());
 
 	player_->SetViewProjection(&railCamera_->GetViewProjection());
-	enemyModel_.reset(Model::Create());
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->Initialize(enemyModel_.get(), textureHandle_, {0, 0, 50});
 	enemy_->SetPlayer(player_.get());

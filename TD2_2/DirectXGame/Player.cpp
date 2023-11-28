@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "cassert"
+#include "Mymath.h"
 #include "ImGuiManager.h"
 
 
@@ -122,4 +123,31 @@ void Player::OnCollision() {
 	}
 }
 
-void Player::Attack() {}
+void Player::Attack() {
+	if (input_->PushKey(DIK_SPACE)) {
+
+		if (--BulletTimer < 0) {
+			BulletTimer = 30;
+
+			// 弾の速度
+			const float kBulletSpeed = 1.0f;
+			Vector3 velocity(0, 0, kBulletSpeed);
+
+			Vector3 N = Normalize(velocity);
+
+			velocity.x = N.x * kBulletSpeed;
+
+			velocity.y = N.y * kBulletSpeed;
+
+			velocity.z = N.z * kBulletSpeed;
+
+			// 弾を生成し、初期化
+			PlayerBullet* newBullet = new PlayerBullet();
+			newBullet->Initialize(ModelPlayerBullet_, GetWorldPosition(), velocity);
+
+			// 弾を登録する
+			bullets_.push_back(newBullet);
+		}
+	}
+
+}
