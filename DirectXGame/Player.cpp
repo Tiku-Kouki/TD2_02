@@ -3,6 +3,7 @@
 #include "ImGuiManager.h"
  #define _USE_MATH_DEFINES
 #include <math.h>
+#include <numbers>
 
 void Player::Initalize(Model* model, Model* PlayerBullet, uint32_t textureHandle, Vector3 pos) { 
 	
@@ -45,10 +46,10 @@ void Player::Update() {
 
 	if (input_->PushKey(DIK_LEFT)) {
 	/*	move.x -= kCharacterSpeed;*/
-		angle -= 1.0f / 180.0f * (float)M_PI;
+		angle -= 1.0f / 180.0f * std::numbers::pi_v<float>;
 	} else if (input_->PushKey(DIK_RIGHT)) {
 		/*move.x += kCharacterSpeed;*/
-		angle += 1.0f / 180.0f * (float)M_PI;
+		angle += 1.0f / 180.0f * std::numbers::pi_v<float>;
 	}
 	if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
@@ -92,6 +93,7 @@ void Player::Update() {
 	ImGui::Text(
 	    " x: %f,y: %f z: %f", worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z);
+	ImGui::Text(" x: %f", Enemypos.z);
 	
 	ImGui::End();
 #endif
@@ -136,15 +138,26 @@ void Player::Attack() {
 
 			// 弾の速度
 			const float kBulletSpeed = 1.0f;
-			Vector3 velocity(0, 0, kBulletSpeed);
+			
 
-			Vector3 N = Normalize(velocity);
+			
 
-			velocity.x = N.x * kBulletSpeed;
+			Vector3 enemyWorld = Enemypos;
+			Vector3 playerWorld = GetWorldPosition();
 
-			velocity.y = N.y * kBulletSpeed;
+			Vector3 difVector = {
+			    enemyWorld.x - playerWorld.x, enemyWorld.y - playerWorld.y ,
+			    enemyWorld.z - playerWorld.z };
 
-			velocity.z = N.z * kBulletSpeed;
+			Vector3 difVectorN = Normalize(difVector);
+
+			Vector3 velocity(
+			    difVectorN.x * kBulletSpeed, difVectorN.y * kBulletSpeed,
+			    difVectorN.z * kBulletSpeed);
+
+			velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+
+			
 
 			// 弾を生成し、初期化
 			PlayerBullet* newBullet = new PlayerBullet();

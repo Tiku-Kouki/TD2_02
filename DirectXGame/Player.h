@@ -8,6 +8,7 @@
 #include "Windows.h"
 #include "WorldTransform.h"
 #include <list>
+#include "Enemy.h"
 
 class Player {
 public:
@@ -29,6 +30,8 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
+
 	// ライフ
 	void SetLife(int32_t Life) { Life_ = Life; };
 
@@ -46,6 +49,9 @@ private:
 
 	Player* player_ = nullptr;
 
+	Enemy* enemy_ = nullptr;
+
+
 	Model* ModelPlayer_ = nullptr;
 
 	std::list<PlayerBullet*> bullets_;
@@ -62,7 +68,7 @@ private:
 
 	float angle = 0.0f;
 
-	int32_t Life_ = 0;
+	int32_t Life_ = 3;
 
 	// デスフラグ
 	bool isDead_ = false;

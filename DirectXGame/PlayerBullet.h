@@ -33,6 +33,8 @@ public:
 
 	bool IsDead() const { return isDead_; }
 
+	Vector3 GetWorldPosition();
+
 private:
 	// ワールド座標データ
 	WorldTransform worldTransform_;

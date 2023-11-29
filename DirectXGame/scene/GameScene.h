@@ -13,6 +13,7 @@
 #include"DebugCamera.h"
 #include <Skydome.h>
 #include "RailCamera.h"
+#include "scene.h"
 
 /// <summary>
 /// ゲームシーン
@@ -45,6 +46,29 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	void CheckAllCollisions();
+
+	void Reset();
+
+	bool isSceneEnd = false;
+	bool IsSceneEnd() { return isSceneEnd; }
+
+	bool isGameOver = false;
+	bool IsGameOver() { return isGameOver; }
+
+	SceneType NextScene() {
+
+		if (isSceneEnd == true) {
+			return SceneType::kClearGame;
+		} else if (isGameOver == true) {
+			return SceneType::kGameOver;
+		}
+		return SceneType::kGamePlay;
+	}
+
+
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -65,11 +89,18 @@ private: // メンバ変数
 	std::unique_ptr<Enemy> enemy_ = nullptr;
 	std::unique_ptr<Player> player_ = nullptr;
 	
+	std::list<EnemyBullet*> enemyBullets_;
+
+
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 
 	 // ライフ
 	uint32_t LifeHandle_;
+
+	int playerLife = 3;
+
+	int EnemyLife = 40;
 
 	Sprite* sprite0 = nullptr;
 	Sprite* sprite1 = nullptr;

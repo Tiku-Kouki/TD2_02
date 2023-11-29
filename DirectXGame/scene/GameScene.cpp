@@ -37,7 +37,7 @@ void GameScene::Initialize() {
 	player_->SetViewProjection(&railCamera_->GetViewProjection());
 	enemyModel_.reset(Model::CreateFromOBJ("Enemybody", true));
 	enemy_ = std::make_unique<Enemy>();
-	enemy_->Initialize(enemyModel_.get(), textureHandle_, {0, 0, 50});
+	enemy_->Initialize(enemyModel_.get(), textureHandle_);
 	enemy_->SetPlayer(player_.get());
 
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -56,15 +56,45 @@ void GameScene::Initialize() {
 	sprite1 = Sprite::Create(LifeHandle_, {70.0f, 50.0f});
 	sprite2 = Sprite::Create(LifeHandle_, {130.0f, 50.0f});
 
+	
+
+
 }
 
 void GameScene::Update() {
+
+	
+	if (playerLife==0) {
+		isGameOver = true;
+	} else {
+		isGameOver = false;
+	}
+
+	if (EnemyLife == 0) {
+		isSceneEnd = true;
+	} else {
+		isSceneEnd = false;
+	}
+
+	
+
+	// デスフラグの立った弾を削除
+	enemyBullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+
+			return true;
+		}
+		return false;
+	});
 
 	enemy_->Update();
 
 	player_->Update();
 
 	player_->SetEnemyPosition(enemy_->GetWorldPosition());
+
+	CheckAllCollisions();
 
 #ifdef _DEBUG
 
@@ -83,6 +113,84 @@ void GameScene::Update() {
 
 	//viewProjection_.UpdateMatrix();
 }
+void GameScene::CheckAllCollisions() {
+	Vector3 posA, posB;
+
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+
+#pragma region // 自キャラと敵弾の当たり判定
+	posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* bullet : enemyBullets_) {
+		posB = bullet->GetWorldPosition();
+
+		float X = (posB.x - posA.x);
+		float Y = (posB.y - posA.y);
+		float Z = (posB.z - posA.z);
+
+		float center = X * X + Y * Y + Z * Z;
+		float R1 = 3.0f; // 自分で決める
+		float R2 = 1.0f; // 自分で決める
+		float RR = (R1 + R2);
+
+		if (center <= (RR * RR)) {
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnCollision();
+			// 敵弾の衝突時コールバックを呼び出す
+			bullet->OnCollision();
+			playerLife--;
+		}
+	}
+#pragma endregion
+
+#pragma region // 自弾と敵キャラの当たり判定
+
+	posA = enemy_->GetWorldPosition();
+
+	for (PlayerBullet* bullet : playerBullets) {
+			
+			posB = bullet->GetWorldPosition();
+
+			float X = (posB.x - posA.x);
+			float Y = (posB.y - posA.y);
+			float Z = (posB.z - posA.z);
+
+			float center = sqrtf(X * X + Y * Y + Z * Z);
+			float R1 = 1.5f; // 自分で決める
+			float R2 = 0.5f; // 自分で決める
+			float RR = (R1 + R2);
+
+			if (center <= (RR * RR)) {
+				// 敵キャラの衝突時コールバックを呼び出す
+			enemy_->OnCollision();
+				// 自弾の衝突時コールバックを呼び出す
+			bullet->OnCollision();
+
+				EnemyLife --;
+			}
+
+	}
+	
+
+#pragma endregion
+
+
+}
+
+void GameScene::Reset() {
+
+	
+	for (EnemyBullet* bullet : enemyBullets_) {
+		    bullet->OnCollision();
+	}
+
+playerLife = 3;
+
+EnemyLife = 40;
+
+}
+
+
 
 void GameScene::Draw() {
 
@@ -129,9 +237,19 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	sprite0->Draw();
-	sprite1->Draw();
-	sprite2->Draw();
+
+	if (playerLife >= 3) {
+		    sprite2->Draw();
+	}
+	if (playerLife >= 2 ) {
+		    sprite1->Draw();
+	}
+	if (playerLife >= 1) {
+		sprite0->Draw();
+	}
+
+	
+	
 
 
 	// スプライト描画後処理

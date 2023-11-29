@@ -9,7 +9,7 @@ class Player;
 
 class Enemy {
 public:
-	void Initialize(Model* model, uint32_t textureHandle, Vector3 pos);
+	void Initialize(Model* model, uint32_t textureHandle);
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
 	
