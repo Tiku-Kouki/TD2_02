@@ -57,12 +57,18 @@ void GameScene::Initialize() {
 	sprite2 = Sprite::Create(LifeHandle_, {130.0f, 50.0f});
 
 	
+	 soundDataHandle_ = audio_->LoadWave("Shooting_Zone.wav");
 
 
 }
 
 void GameScene::Update() {
 
+	if (!audio_->IsPlaying(voiceHandle_)) {
+
+		 voiceHandle_ = audio_->PlayWave(soundDataHandle_, true, 0.5);
+	 }
+	audio_->ResumeWave(voiceHandle_);
 	
 	if (playerLife==0) {
 		isGameOver = true;
@@ -180,6 +186,7 @@ void GameScene::CheckAllCollisions() {
 void GameScene::Reset() {
 
 	
+
 	for (EnemyBullet* bullet : enemyBullets_) {
 		    bullet->OnCollision();
 	}
@@ -187,6 +194,8 @@ void GameScene::Reset() {
 playerLife = 3;
 
 EnemyLife = 40;
+
+audio_->PauseWave(voiceHandle_);
 
 }
 
