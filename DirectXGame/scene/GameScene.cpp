@@ -8,8 +8,8 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete debugCamera_;
 	delete railCamera_;
-	delete modelSkydome_;
-	delete ModelPlayer_;
+	
+	
 }
 
 void GameScene::Initialize() {
@@ -19,7 +19,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.png");
 
-	ModelPlayer_ = Model::CreateFromOBJ("Player", true);
+	ModelPlayer_.reset(Model::CreateFromOBJ("Player", true));
+	ModelPlayerBullet_.reset(Model::CreateFromOBJ("PlayerBullet", true));
 	model_.reset(Model::Create());
 
 	viewProjection_.Initialize();
@@ -29,12 +30,12 @@ void GameScene::Initialize() {
 
 
 	player_ = std::make_unique<Player>();
-	player_->Initalize(ModelPlayer_, textureHandle_, playerPosition);
+	player_->Initalize(ModelPlayer_.get(), ModelPlayerBullet_.get(), textureHandle_, playerPosition);
 
 	railCamera_->SetTarget(&player_->GetWorldTransform());
 
 	player_->SetViewProjection(&railCamera_->GetViewProjection());
-	enemyModel_.reset(Model::Create());
+	enemyModel_.reset(Model::CreateFromOBJ("Enemybody", true));
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->Initialize(enemyModel_.get(), textureHandle_, {0, 0, 50});
 	enemy_->SetPlayer(player_.get());
@@ -43,10 +44,18 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	// Skydome
-	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	modelSkydome_.reset (Model::CreateFromOBJ("skydome", true));
 	skydome_ = new Skydome();
-	skydome_->Initialize(modelSkydome_);
+	skydome_->Initialize(modelSkydome_.get());
 	skydome_->Update();
+
+	// 時機ライフ
+	LifeHandle_ = TextureManager::Load("UI/HP.png");
+
+	sprite0 = Sprite::Create(LifeHandle_, {10.0f, 50.0f});
+	sprite1 = Sprite::Create(LifeHandle_, {70.0f, 50.0f});
+	sprite2 = Sprite::Create(LifeHandle_, {130.0f, 50.0f});
+
 }
 
 void GameScene::Update() {
@@ -119,6 +128,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	sprite0->Draw();
+	sprite1->Draw();
+	sprite2->Draw();
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

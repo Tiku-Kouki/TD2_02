@@ -56,8 +56,9 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	WorldTransform worldTransform_;
 	Skydome* skydome_ = nullptr;
-	Model* modelSkydome_ = nullptr;
-	Model* ModelPlayer_ = nullptr;
+	std::unique_ptr<Model> modelSkydome_ = nullptr;
+	std::unique_ptr<Model> ModelPlayer_ = nullptr;
+	std::unique_ptr<Model> ModelPlayerBullet_ = nullptr;
 	std::unique_ptr<Model> model_ = nullptr;
 	std::unique_ptr<Model> enemyModel_ = nullptr;
 	
@@ -67,7 +68,12 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 
-	
+	 // ライフ
+	uint32_t LifeHandle_;
+
+	Sprite* sprite0 = nullptr;
+	Sprite* sprite1 = nullptr;
+	Sprite* sprite2 = nullptr;
 
 	RailCamera* railCamera_ = nullptr;
 
