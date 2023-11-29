@@ -4,11 +4,15 @@
  #define _USE_MATH_DEFINES
 #include <math.h>
 
-void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) { 
+void Player::Initalize(Model* model, Model* PlayerBullet, uint32_t textureHandle, Vector3 pos) { 
 	
 	assert(model); 
+	assert(PlayerBullet);
 	model_ = model;
+	
+	ModelPlayerBullet_ = PlayerBullet;
 	textureHandle_ = textureHandle;
+
 
 	worldTransform_.scale_ = {1.0f, 1.0f, 1.0f};
 
@@ -20,7 +24,7 @@ void Player::Initalize(Model* model, uint32_t textureHandle,Vector3 pos) {
 
 	input_ = Input::GetInstance();
 
-
+	 Life_ = 3;
 	
 }
 
@@ -29,6 +33,15 @@ void Player::Update() {
 	Vector3 move = {0, 0, 0};
 
 	const float kCharacterSpeed = 0.2f;
+
+	// デスフラグの立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
 	if (input_->PushKey(DIK_LEFT)) {
 	/*	move.x -= kCharacterSpeed;*/
@@ -65,6 +78,14 @@ void Player::Update() {
 	worldTransform_.translation_.z = Enemypos.z + std::sin(angle) * 50.0f;
 
 
+	// キャラクターの攻撃処理
+	Attack();
+
+	// 弾更新
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
 	worldTransform_.UpdateMatrix();
 #ifdef _DEBUG
 	ImGui::Begin("du");
@@ -84,7 +105,9 @@ void Player::Draw(ViewProjection &viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection);
 	
-
+	 for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }
 
 Vector3 Player::GetWorldPosition() {
@@ -96,4 +119,39 @@ Vector3 Player::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void Player::OnCollision() {
+	Life_--;
+	if (Life_ <= 0) {
+		isDead_ = true;
+	}
+}
+
+void Player::Attack() {
+	if (input_->PushKey(DIK_SPACE)) {
+
+		if (--BulletTimer < 0) {
+			BulletTimer = 30;
+
+			// 弾の速度
+			const float kBulletSpeed = 1.0f;
+			Vector3 velocity(0, 0, kBulletSpeed);
+
+			Vector3 N = Normalize(velocity);
+
+			velocity.x = N.x * kBulletSpeed;
+
+			velocity.y = N.y * kBulletSpeed;
+
+			velocity.z = N.z * kBulletSpeed;
+
+			// 弾を生成し、初期化
+			PlayerBullet* newBullet = new PlayerBullet();
+			newBullet->Initialize(ModelPlayerBullet_, GetWorldPosition(), velocity);
+
+			// 弾を登録する
+			bullets_.push_back(newBullet);
+		}
+	}
 }
