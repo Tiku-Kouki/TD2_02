@@ -62,11 +62,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameScene->Initialize();
 
 	uint32_t soundDataHandle_ = 0;
-	
+	uint32_t voiceHandle_ = 0;
 
 	soundDataHandle_ = audio->LoadWave("Shooting_Zone.wav");
 	audio->PlayWave(soundDataHandle_);
-	
+	voiceHandle_ = audio->PlayWave(soundDataHandle_, true, 0.01f);
 
 	// メインループ
 	while (true) {
