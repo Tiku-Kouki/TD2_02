@@ -77,6 +77,7 @@ private: // メンバ変数
 
 	RailCamera* railCamera_ = nullptr;
 
+	
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

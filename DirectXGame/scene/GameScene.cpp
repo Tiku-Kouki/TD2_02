@@ -56,6 +56,7 @@ void GameScene::Initialize() {
 	sprite1 = Sprite::Create(LifeHandle_, {70.0f, 50.0f});
 	sprite2 = Sprite::Create(LifeHandle_, {130.0f, 50.0f});
 
+	
 }
 
 void GameScene::Update() {
