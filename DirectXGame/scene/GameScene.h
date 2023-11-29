@@ -100,7 +100,7 @@ private: // メンバ変数
 
 	int playerLife = 3;
 
-	int EnemyLife = 40;
+	int EnemyLife = 20;
 
 	Sprite* sprite0 = nullptr;
 	Sprite* sprite1 = nullptr;

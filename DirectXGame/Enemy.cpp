@@ -28,9 +28,14 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 void Enemy::Update() { 
+
+	
+
 	worldTransform_.UpdateMatrix(); 
 
 		phaseReset();
+
+		
 
 
 	#ifdef _DEBUG
@@ -48,6 +53,7 @@ void Enemy::Update() {
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection);
 
+	
 
 }
 

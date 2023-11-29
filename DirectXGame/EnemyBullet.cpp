@@ -26,6 +26,7 @@ void EnemyBullet::Update() {
 	////座標を移動させる(1フレーム分の移動量を足しこむ)
 	Move(worldTransform_.translation_, velocity_);
 
+	
 
 	// 時間経過でデス
 	if (--deathTimer <= 0) {
@@ -37,7 +38,7 @@ void EnemyBullet::Update() {
 
 void EnemyBullet::Draw(const ViewProjection& viewProjection) {
 	// モデルの描画
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection);
 }
 
 void EnemyBullet::OnCollision() { isDead_ = true; }
