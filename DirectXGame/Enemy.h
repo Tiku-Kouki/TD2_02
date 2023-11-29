@@ -26,10 +26,15 @@ public:
 
 	Vector3 GetWorldPosition();
 
+	void phaseReset();
+
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
 	~Enemy();
+
+	static const int kFireInterval = 60;
 
 private:
 	// ワールド座標データ
@@ -46,4 +51,6 @@ private:
 	int32_t EnemyBulletTimer = 0;
 	Player* player_ = nullptr;
 	Model* EnemyBullet_ = nullptr;
+
+	int32_t fireTimer = 0;
 };

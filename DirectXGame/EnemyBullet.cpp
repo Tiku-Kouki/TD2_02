@@ -10,8 +10,8 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	assert(model);
 
 	model = model;
-	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("red.png");
+	//// テクスチャ読み込み
+	//textureHandle_ = TextureManager::Load("red.png");
 
 	// ワールドトランスフォームの初期化
 	// 引数で受け取った初期座標をセット

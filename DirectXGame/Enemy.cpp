@@ -30,6 +30,9 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 void Enemy::Update() { 
 	worldTransform_.UpdateMatrix(); 
 
+		phaseReset();
+
+
 	#ifdef _DEBUG
 	ImGui::Begin("x");
 	ImGui::Text(" %d", isDead_);
@@ -44,6 +47,8 @@ void Enemy::Update() {
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection);
+
+
 }
 
 void Enemy::OnCollision() {
@@ -58,17 +63,21 @@ void Enemy::Fire() {
 	assert(player_);
 
 	// 弾の速度
-	const float kBulletSpeed = -1.0f;
+	const float kBulletSpeed = 1.0f;
 
 	Vector3 PlayerWorldPosition = player_->GetWorldPosition();
 
-	Vector3 EnemyWorldPosition = Enemy::GetWorldPosition();
+	Vector3 EnemyWorldPosition = GetWorldPosition();
 
-	Vector3 A = Subtract(EnemyWorldPosition, PlayerWorldPosition);
+	Vector3 difVector = {
+	    PlayerWorldPosition.x - EnemyWorldPosition.x,
+		PlayerWorldPosition.y - EnemyWorldPosition.y,
+	    PlayerWorldPosition.z - EnemyWorldPosition.z};
 
-	A = Normalize(A);
+	Vector3 difVectorN = Normalize(difVector);
 
-	Vector3 velocity = Multiply(A, kBulletSpeed);
+	Vector3 velocity(
+	    difVectorN.x * kBulletSpeed, difVectorN.y * kBulletSpeed, difVectorN.z * kBulletSpeed);
 
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
@@ -86,6 +95,19 @@ Vector3 Enemy::GetWorldPosition() {
 	pos.z = worldTransform_.matWorld_.m[3][2];
 
 	return pos;
+
+}
+
+void Enemy::phaseReset() {
+
+fireTimer--;
+
+	if (fireTimer <= 0 ) {
+
+		Fire();
+
+		fireTimer = kFireInterval;
+	}
 
 }
 
