@@ -146,7 +146,8 @@ void Player::Attack() {
 			Vector3 playerWorld = GetWorldPosition();
 
 			Vector3 difVector = {
-			    enemyWorld.x - playerWorld.x, enemyWorld.y - playerWorld.y ,
+			    enemyWorld.x - playerWorld.x,
+				enemyWorld.y - playerWorld.y ,
 			    enemyWorld.z - playerWorld.z };
 
 			Vector3 difVectorN = Normalize(difVector);
@@ -155,7 +156,7 @@ void Player::Attack() {
 			    difVectorN.x * kBulletSpeed, difVectorN.y * kBulletSpeed,
 			    difVectorN.z * kBulletSpeed);
 
-			velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+			//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 			
 
