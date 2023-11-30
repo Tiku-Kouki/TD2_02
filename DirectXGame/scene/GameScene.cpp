@@ -193,7 +193,7 @@ void GameScene::Reset() {
 
 playerLife = 3;
 
-EnemyLife = 40;
+EnemyLife = 15;
 
 audio_->PauseWave(voiceHandle_);
 
